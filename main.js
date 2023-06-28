@@ -56,9 +56,10 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+const postLike = []
 for (let i = 0; i < posts.length; i++) {
     const element = posts[i];
-    console.log(element);
+    //console.log(element);
     const html = `        
     <div class="post">
             <div class="post__header">
@@ -85,7 +86,7 @@ for (let i = 0; i < posts.length; i++) {
                         </a>
                     </div>
                     <div class="likes__counter">
-                        Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
+                        Piace a <b id="like-counter-${element.id}" class="js-likes-counter">${element.likes}</b> persone
                     </div>
                 </div> 
             </div>            
@@ -93,3 +94,23 @@ for (let i = 0; i < posts.length; i++) {
     myContainer.innerHTML += html;
 }
 //console.log(posts)
+
+const button = document.querySelectorAll('.js-like-button');
+//console.log(button)
+for (let i = 0; i < button.length; i++) {
+    const buttonElement = button[i];
+    buttonElement.addEventListener('click', function(event){
+        event.preventDefault();
+       //console.log('cliccato',buttonElement)
+        buttonElement.classList.add('like-button--liked');
+        const dataPostId = buttonElement.getAttribute('data-postid'); //qui prendo l'attributo dove deve cambiare il valore al click
+        //console.log(dataPostId);
+        let likes = posts[dataPostId - 1].likes; //prendo la posizione dell'elemento + il numero dei like
+        //console.log(likes)
+        likes++; //incremento
+        postLike.push(dataPostId) // qui pusho nel nuovo array la posizione degli elementi al click
+        //console.log(postLike)
+        const letCounter = document.getElementById(`like-counter-${dataPostId}`); //qui lo seleziono l'id dove ce il numero di like
+        letCounter.innerHTML = likes; //qui lo metto nell'html
+    })
+};
